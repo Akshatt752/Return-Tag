@@ -1,0 +1,165 @@
+@import "tailwindcss";
+
+/* dark: utilities follow the .dark class (set by ThemeProvider), not just the OS setting */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Colour tokens. Components use these names (bg-paper, text-ink, border-line...)
+   so light and dark mode only need to be defined once, here. */
+:root {
+  color-scheme: light;
+  --paper: #f4f2ec;
+  --card: #fffefa;
+  --muted: #ebe7de;
+  --ink: #191917;
+  --ink-2: #55524b;
+  --ink-3: #8a857a;
+  --line: #e2ddd2;
+  --line-strong: #c9c2b4;
+  --accent: #1f6f5c;
+  --tag: #f5c518;
+  --lost: #c2410c;
+  --found: #b45309;
+  --returned: #15803d;
+  /* Chart series (validated categorical slots 1 and 2) */
+  --series-1: #2a78d6;
+  --series-2: #eb6834;
+}
+
+.dark {
+  color-scheme: dark;
+  --paper: #121311;
+  --card: #1a1b18;
+  --muted: #23241f;
+  --ink: #ecebe4;
+  --ink-2: #a9a79c;
+  --ink-3: #75736a;
+  --line: #2b2c27;
+  --line-strong: #3d3e37;
+  --accent: #4fb89a;
+  --tag: #f5c518;
+  --lost: #fb7a4a;
+  --found: #f0a73a;
+  --returned: #4ade80;
+  --series-1: #3987e5;
+  --series-2: #d95926;
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-card: var(--card);
+  --color-muted: var(--muted);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-accent: var(--accent);
+  --color-tag: var(--tag);
+  --color-lost: var(--lost);
+  --color-found: var(--found);
+  --color-returned: var(--returned);
+  --color-series-1: var(--series-1);
+  --color-series-2: var(--series-2);
+}
+
+@theme {
+  --font-sans: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Bricolage Grotesque", "Geist", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+
+body {
+  @apply bg-paper font-sans text-ink antialiased;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--tag) 45%, transparent);
+  color: var(--ink);
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-6xl px-4 sm:px-6;
+  }
+  .sheet {
+    @apply rounded-lg border border-line bg-card;
+  }
+  .eyebrow {
+    @apply font-mono text-[11px] font-medium tracking-[0.14em] text-ink-3 uppercase;
+  }
+  .heading {
+    @apply font-display font-semibold tracking-tight text-ink;
+  }
+  .code {
+    @apply font-mono font-medium tracking-[0.08em];
+  }
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-md bg-ink px-5 py-2.5 text-sm font-medium text-paper transition hover:opacity-85 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-accent {
+    @apply inline-flex items-center justify-center gap-2 rounded-md bg-accent px-5 py-2.5 text-sm font-medium text-white transition hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink disabled:cursor-not-allowed disabled:opacity-50 dark:text-paper;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-md border border-line-strong px-5 py-2.5 text-sm font-medium text-ink transition hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-danger {
+    @apply inline-flex items-center justify-center gap-2 rounded-md border border-lost/40 px-5 py-2.5 text-sm font-medium text-lost transition hover:bg-lost/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lost disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-sm {
+    @apply px-3 py-1.5 text-[13px];
+  }
+  .input {
+    @apply w-full rounded-md border border-line-strong bg-card px-3.5 py-2.5 text-base text-ink placeholder:text-ink-3 focus:border-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/30 sm:text-sm;
+  }
+  .label {
+    @apply mb-1.5 block text-sm font-medium text-ink;
+  }
+  .hint {
+    @apply mt-1.5 text-xs leading-relaxed text-ink-3;
+  }
+  .link {
+    @apply underline decoration-line-strong underline-offset-4 transition hover:decoration-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent;
+  }
+  .alert-error {
+    @apply rounded-md border-l-2 border-lost bg-lost/10 px-4 py-3 text-sm text-ink;
+  }
+  .alert-ok {
+    @apply rounded-md border-l-2 border-returned bg-returned/10 px-4 py-3 text-sm text-ink;
+  }
+  /* Notched luggage-tag card used for tag previews and printed stickers */
+  .tag-shape {
+    clip-path: polygon(14px 0, 100% 0, 100% 100%, 14px 100%, 0 calc(100% - 14px), 0 14px);
+  }
+}
+
+/* Visually hidden but still in the DOM (honeypot field, screen-reader text) */
+.sr-only-field {
+  position: absolute !important;
+  left: -10000px !important;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+@media print {
+  :root,
+  .dark {
+    --paper: #ffffff;
+    --card: #ffffff;
+    --ink: #000000;
+    --ink-2: #333333;
+    --ink-3: #555555;
+    --line: #cccccc;
+    --line-strong: #999999;
+  }
+  body {
+    background: #ffffff !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+  @page {
+    margin: 10mm;
+  }
+}
